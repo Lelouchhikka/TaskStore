@@ -1,0 +1,82 @@
+/* Remove unnecessary margins/padding */
+html, body { margin: 0; padding: 0 }
+
+.wrapper {
+    display: grid;
+    /* Header and footer span the entire width, sidebars and content are fixed, with empty space on sides */
+    grid-template-areas:
+    "header header header header header"
+    "empty_left sidebar_1 content sidebar_2 empty_right"
+    "footer footer footer footer footer";
+    /* Only expand middle section vertically (content and sidebars) */
+    grid-template-rows: 1fr 3fr 1fr;
+    /* 100% width, but static widths for content and sidebars */
+    grid-template-columns: 1fr 15% 50% 15% 1fr;
+    /* Force grid to be at least the height of the screen */
+    min-height: 100vh;
+}
+.header {
+    grid-area: header;
+
+    top: 0;
+    /* Ensure header appears on top of content/sidebars */
+    z-index: 1;
+
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 1rem;
+}
+/* Save header height to properly set `padding-top` and `margin-top` for sticky content */
+:root {
+    --header-height: calc(1rem * 1.5 + 1rem * 2);
+}
+.app{
+    background: #666;
+}
+.sidebar-1 {
+    grid-area: sidebar_1;
+}
+.sidebar-2 {
+    grid-area: sidebar_2;
+}
+.sidebar-1,
+.sidebar-2 {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    max-height: 80%;
+
+    /* Styling to match reference */
+
+}
+
+.content {
+    grid-area: content;
+
+    /* General appearance */
+}
+
+/* Save footer height to properly set `bottom` and `min-height` for sticky content */
+:root {
+    --footer-height: calc(.8rem * 1.5 + .5rem * 2);
+}
+
+.sticky-spacer {
+    flex-grow: 10;
+}
+.sticky-content {
+    position: sticky;
+    bottom: var(--footer-height);
+    min-height: calc(100vh - var(--footer-height));
+
+    box-sizing: border-box;
+
+    --padding: 10px;
+    padding:
+        calc(var(--header-height) + var(--padding))
+        var(--padding)
+        var(--padding);
+    margin-top: calc(0px - var(--header-height));
+}
